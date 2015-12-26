@@ -17,8 +17,6 @@ function viewFile(fileName){
 
 app.get('/', function (req, res) {
   console.log("request index.html");
-  // var output = fs.readFileSync("./index.html", "utf-8");
-  // res.end(output);
   res.sendFile(viewFile('index.html'))
 });
 
@@ -37,7 +35,6 @@ var user_num=0;
 // event
 io.sockets.on("connection", function (socket) {
 
-  // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
   socket.on("connected", function () {
     console.log("connected");
     userHash[socket.id] = true;
@@ -60,14 +57,12 @@ io.sockets.on("connection", function (socket) {
 
 });
 
-
 kuromoji.builder({ dicPath:__dirname+'/data/dict/' }).build(function (err, tokenizer) {
     // tokenizer is ready
     f.wakati = function(text){
       return tokenizer.tokenize(text);
     }
 });
-
 
 function point(text){
   var words = f.wakati(text);
@@ -91,8 +86,3 @@ function point(text){
   return retWords;
 
 }
-
-// setTimeout(function(){
-//   console.log(point("今日はいい天気ですね。"))
-//   console.log(point("i will kill you"))
-// },2000)
