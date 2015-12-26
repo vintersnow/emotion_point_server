@@ -1,0 +1,16 @@
+{
+  "name": "emotion_point",
+  "version": "1.0.0",
+  "description": "make emotion point for text",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vinter",
+  "license": "",
+  "dependencies": {
+    "express": "^4.13.3",
+    "kuromoji": "0.0.5",
+    "socket.io": "^1.3.7"
+  }
+}
