@@ -7,6 +7,7 @@ var app = express();
 var port=process.env.PORT || 4000;
 
 var f={};
+var wordPoint = require(__dirname+'/data/word_point.json')
 
 app.use(express.static(__dirname + '/public'));
 
@@ -45,9 +46,8 @@ io.sockets.on("connection", function (socket) {
   });
 
   socket.on("text",function(text){
-    var words = f.wakati(text);
-    console.log(words);
-    io.to(socket.id).emit('emotionResult',words);
+    var retPoint = point(text);
+    io.to(socket.id).emit('emotionResult',retPoint);
   });
 
   socket.on("disconnect", function () {
@@ -67,3 +67,18 @@ kuromoji.builder({ dicPath:__dirname+'/data/dict/' }).build(function (err, token
       return tokenizer.tokenize(text);
     }
 });
+
+
+function point(text){
+  var words = f.wakati(text);
+  var retWords={};
+  words.forEach(function(e){
+    retWords[e.surface_form]=null;
+    if(e.word_type !== 'KNOWN') return;
+    var p = wordPoint[e.basic_form]
+    if(p){
+      retWords[e.surface_form]=p;
+    }
+  });
+  return retWords;
+}
