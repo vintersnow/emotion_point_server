@@ -42,7 +42,6 @@ io.sockets.on("connection", function (socket) {
     console.log("connected");
     userHash[socket.id] = true;
     user_num++;
-    // io.sockets.emit("postData",  currentData);
   });
 
   socket.on("text",function(text){
@@ -71,13 +70,17 @@ kuromoji.builder({ dicPath:__dirname+'/data/dict/' }).build(function (err, token
 
 function point(text){
   var words = f.wakati(text);
-  var retWords={};
-  words.forEach(function(e){
-    retWords[e.surface_form]=null;
+  var retWords=[];
+  words.forEach(function(e,idx){
+    var ret = {};
+    retWords[idx]=ret;
+    ret.surface=e.surface_form;
     if(e.word_type !== 'KNOWN') return;
+    if(!(e.pos.match(/形容詞|動詞|名詞|副詞/))) return;
+
     var p = wordPoint[e.basic_form]
     if(p){
-      retWords[e.surface_form]=p;
+      ret.point = p;
     }
   });
   return retWords;
