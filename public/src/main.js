@@ -23,25 +23,25 @@ socketio.on("emotionResult",function(data){
 
 socketio.emit("connected");
 
-var OreTextArea = React.createClass({displayName: "OreTextArea",
+var OreTextArea = React.createClass({
   onClick() {
     socketio.emit("text",this.refs.textArea.getDOMNode().value);
   },
   render() {
     return (
-      React.createElement("div", {classNma: "jumbotron"}, 
-        React.createElement("h1", null, "Emotion Point System"), 
-        React.createElement("span", null, "これの感情ポイントは", this.props.point, "です!"), 
-        React.createElement("div", null, 
-          React.createElement("textarea", {ref: "textArea", className: "form-control", rows: "3"}, "Input text here!!"), 
-          React.createElement("button", {onClick: this.onClick}, "Go")
-        )
-      )
+      <div classNma="jumbotron">
+        <h1>Emotion Point System</h1>
+        <span>これの感情ポイントは{this.props.point}です!</span>
+        <div>
+          <textarea ref="textArea" className="form-control" rows="3">Input text here!!</textarea>
+          <button onClick={this.onClick}>Go</button>
+        </div>
+      </div>
     );
   }
 });
 
 var textarea = React.render(
-    React.createElement(OreTextArea, {point: "0"}),
+    <OreTextArea point="0" />,
     document.getElementById('main')
 );

@@ -45,6 +45,7 @@ io.sockets.on("connection", function (socket) {
   });
 
   socket.on("text",function(text){
+    console.log("text:",text);
     var retPoint = point(text);
     io.to(socket.id).emit('emotionResult',retPoint);
   });
@@ -75,13 +76,23 @@ function point(text){
     var ret = {};
     retWords[idx]=ret;
     ret.surface=e.surface_form;
-    if(e.word_type !== 'KNOWN') return;
-    if(!(e.pos.match(/形容詞|動詞|名詞|副詞/))) return;
-
-    var p = wordPoint[e.basic_form]
+    // 英語かどうか
+    if(!(e.surface_form.match(/\w+/))){
+      if(e.word_type !== 'KNOWN') return;
+      if(!(e.pos.match(/形容詞|動詞|名詞|副詞/))) return;
+      var p = wordPoint[e.basic_form]
+    }else{
+      var p = wordPoint[e.surface_form]
+    }
     if(p){
       ret.point = p;
     }
   });
   return retWords;
+
 }
+
+// setTimeout(function(){
+//   console.log(point("今日はいい天気ですね。"))
+//   console.log(point("i will kill you"))
+// },2000)
