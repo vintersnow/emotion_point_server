@@ -29,12 +29,11 @@ var server = app.listen(port, function () {
 
 
 // socket.io
-var io = require("socket.io").listen(server);
+var io = require("socket.io")(server);
 var userHash = {};
 var user_num=0;
 // event
-io.sockets.on("connection", function (socket) {
-
+io.on("connection", function (socket) {
   socket.on("connected", function () {
     console.log("connected");
     userHash[socket.id] = true;
